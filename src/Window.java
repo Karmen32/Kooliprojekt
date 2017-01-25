@@ -150,7 +150,7 @@ public class Window extends Application {
 		}
 
 		Game game = new Game(picture, this);
-		game.init(); //calls forth the init method on the instance of game
+		game.init(); // Calls forth the init method on the instance of game
 		game.addMouseEventHandler();//what happens when using mouse click
 		return new Scene(game, 700, 700);
 	}
@@ -165,7 +165,7 @@ public class Window extends Application {
 		alert.setContentText("Olete lahendanud kõik õigesti");
 		alert.showAndWait();
 		Stage stage = (Stage) scene.getWindow();
-		stage.close();//when "OK" is pressed, the game window and program itself will close
+		stage.close();// When "OK" is pressed, the game window and program itself will close
 
 	}
 }

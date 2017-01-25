@@ -56,15 +56,15 @@ class Game extends GridPane
 			int rowCounter = 0;
 			List<Integer> oneRowHints = new ArrayList<>();
 			for (int j = 0; j < picture[0].length; j++) {
-				//this deals with row hints
+				//This deals with row hints
 				if (picture[i][j] == 1) {
-					rowCounter++; //shows how many coloured squares there are in a row/after each other.
+					rowCounter++; //Shows how many coloured squares there are in a row/after each other.
 				} else if (rowCounter > 0) {
 					oneRowHints.add(rowCounter);
 					rowCounter = 0;
 				}
 
-				//if last element and rowCounter is bigger than 0, means there is a coloured square in the end; necessary in order to keep the hints in correct rows and not have them flow over to other rows.
+				//If last element and rowCounter is bigger than 0, means there is a coloured square in the end; necessary in order to keep the hints in correct rows and not have them flow over to other rows.
 				if (j + 1 == picture[0].length && rowCounter > 0) {
 					oneRowHints.add(rowCounter);
 				}
@@ -79,7 +79,7 @@ class Game extends GridPane
 			int colCounter = 0;
 			List<Integer> oneColHints = new ArrayList<>();
 			for (int j = 0; j < picture.length; j++) {
-				//this deals with column hints
+				//This deals with column hints
 				if (picture[j][i] == 1) {
 					colCounter++;
 				} else if (0 < colCounter) {
@@ -87,7 +87,7 @@ class Game extends GridPane
 					colCounter = 0;
 				}
 
-				//if last element and colCounter is bigger than 0, means there is a picture in the end
+				//If last element and colCounter is bigger than 0, means there is a picture in the end
 				if (j + 1 == picture.length && colCounter > 0) {
 					oneColHints.add(colCounter);
 				}
@@ -99,13 +99,13 @@ class Game extends GridPane
 	}
 
 	/**
-	 * this method creates the grid which forms the game field.
+	 * This method creates the grid which forms the game field.
 	 */
 
 	private void initSquares() {
 		int rowCount = picture.length;
 		int colCount = picture[0].length;
-		int rowElementCount = rowCount + 1;//the gamefield itself is 1 tile bigger than the original level in the text file
+		int rowElementCount = rowCount + 1;//The gamefield itself is 1 tile bigger than the original level in the text file
 		int colElementCount = colCount + 1;
 
 		for (int row = 0; row < rowElementCount; row++) {
@@ -113,18 +113,18 @@ class Game extends GridPane
 				StackPane stack = new StackPane();
 				stack.setStyle("-fx-border-color: black");
 
-				if (row == 0 && col != 0) {//this is where the hints are for different columns
+				if (row == 0 && col != 0) {//This is where the hints are for different columns
 					//we do row - 1 because hint containers are stacks also
 					Text text = new Text(getHints(colHints, col - 1));
 					stack.getChildren().add(text);
-					rowHeaders.add(stack);//hints are added as visible numbers
+					rowHeaders.add(stack);//Hints are added as visible numbers
 				} else if (col == 0 && row != 0) {
-					//we do col - 1 because hint containers are stacks also
+					//It is col - 1 because hint containers are stacks also
 					Text text = new Text(getHints(rowHints, row - 1));
 					stack.getChildren().add(text);
 					colHeaders.add(stack);
 				} else {
-					stack.setBackground(Background.EMPTY);//for the rest of the gamefield, the background will be set as empty
+					stack.setBackground(Background.EMPTY);//For the rest of the gamefield, the background will be set as empty
 				}
 
 				add(stack, col, row);
@@ -132,7 +132,7 @@ class Game extends GridPane
 		}
 
         /*
-		for loops for the column and row headers in order to set their widths
+		For loops for the column and row headers in order to set their widths
 		@see http://stackoverflow.com/questions/23272924/dynamically-add-elements-to-a-fixed-size-gridpane-in-javafx
 		 */
 		for (int i = 0; i < rowElementCount; i++) {
@@ -153,36 +153,36 @@ class Game extends GridPane
 	}
 
     /**
-     * Method for
+     * Method for taking a list of int values and converting them to a string.
      * @param hints a list which contains the hits of a row or column
      * @param index column or row index of this hint list
      * @return stringHint, which is a string of numbers with spaces between
      */
 	private String getHints(List<List<Integer>> hints, int index) {
 		String stringHint = "";
-		for (int hint : hints.get(index)) { //for each loops which goes over every hint in the list
-			stringHint = stringHint + " " + hint; //adds the hints as String with spaces in between
+		for (int hint : hints.get(index)) { //For each loops which goes over every hint in the list
+			stringHint = stringHint + " " + hint; //Adds the hints as String with spaces in between
 		}
 		return stringHint;
 	}
 
 	/**
-	 * this method checks if the picture is complete or not; solved according to the solution in the corresponding text file
-     *got some help from my brother
+	 * This method checks if the picture is complete or not; solved according to the solution in the corresponding text file
+     *I got some help from my brother
 	 */
 	private boolean isComplete() {
 		for (Node stack : getChildren()) {
-			ObservableMap<Object, Object> properties = stack.getProperties();//tracks changes
-			int col = Integer.parseInt(properties.get("gridpane-column").toString()) - 1;//changes the gridpane node address to an integer; -1 is added because the original level is 1 tile smaller than the gamefield
+			ObservableMap<Object, Object> properties = stack.getProperties();//Tracks changes
+			int col = Integer.parseInt(properties.get("gridpane-column").toString()) - 1;//Changes the gridpane node address to an integer; -1 is added because the original level is 1 tile smaller than the gamefield
 			int row = Integer.parseInt(properties.get("gridpane-row").toString()) - 1;
 			if (col == -1 || row == -1) {
 				continue;
 			}
 
-			//state of the square in reality
+			//State of the square in reality
 			boolean isColored = ((StackPane) stack).getBackground() == blackBackground;
 
-			//state of the square in the actual picture in the text file
+			//State of the square in the actual picture in the text file
 			boolean isActuallyColored = picture[row][col] == 1;
 
 			if (isColored != isActuallyColored) {
@@ -193,28 +193,28 @@ class Game extends GridPane
 	}
 
     /**
-     * method for controlling what a mouse click does
+     * Method for controlling what a mouse click does
      */
 	void addMouseEventHandler() {
 		setOnMouseClicked(e -> {
-			if (e.getButton().compareTo(MouseButton.PRIMARY) != 0) { //if it is not a primary mouseclick, the program will do nothing
+			if (e.getButton().compareTo(MouseButton.PRIMARY) != 0) { //If it is not a primary mouseclick, the program will do nothing
 				return;
 			}
 
 			for (Node stack : getChildren()) {
-				if (!(stack instanceof StackPane) || rowHeaders.contains(stack) || colHeaders.contains(stack)) { //if the clicked place is not in the gridpane or is at either the column or row header, the program will continue without reactng
+				if (!(stack instanceof StackPane) || rowHeaders.contains(stack) || colHeaders.contains(stack)) { //If the clicked place is not in the gridpane or is at either the column or row header, the program will continue without reactng
 					continue;
 				}
 
-				if (stack.getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) { //left mouse click happens in the game field
+				if (stack.getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) { //Left mouse click happens in the game field
 					if (((StackPane) stack).getBackground().isEmpty()) {
-						((StackPane) stack).setBackground(blackBackground); //if the square background was white/empty, it will be changed into previously defined background
+						((StackPane) stack).setBackground(blackBackground); //If the square background was white/empty, it will be changed into previously defined background
 					} else {
 						((StackPane) stack).setBackground(Background.EMPTY);
 					}
 
 					if (isComplete()) {
-						window.displayEndScreen(); //if the game field matches to the text file content, alert message will pop up
+						window.displayEndScreen(); //If the game field matches to the text file content, alert message will pop up
 					}
 					break;
 				}
